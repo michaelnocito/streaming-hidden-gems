@@ -1,0 +1,7 @@
+# Big data files stay local -- only the 1,000-row samples are committed
+data/*.tsv
+data/*.tsv.gz
+data/*.db
+*.db
+*.sqlite
+large*.csv
