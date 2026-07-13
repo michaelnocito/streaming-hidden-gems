@@ -53,6 +53,10 @@ rebuild), so only 1,000-row samples in `data/sample/` are committed.
    - **Table name:** `title_ratings` (or `title_basics` for the big file)
    - **Column names in first line:** checked (the files have a header row)
    - **Field separator:** **Tab**
+   - **Quote character:** **blank/none**. The default `"` silently DROPS
+     rows: some titles contain a double-quote, and treating it as special
+     made the first basics import lose ~256,000 rows (12,379,576 instead of
+     12,635,420). These files use no quoting at all.
    - Leave the rest at defaults.
 5. Click **OK** and let it run. The ratings file is quick; `title.basics` is
    1.1 GB and will take noticeably longer and use real memory. That size is

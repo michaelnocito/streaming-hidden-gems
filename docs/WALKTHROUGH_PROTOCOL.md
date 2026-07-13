@@ -29,11 +29,17 @@ only.
    get written back into the .sql file's WHY/RESULTS boxes, the same
    retrospective way the Steam file recorded its counts.
 
-5. **Read the prior project's actual files before starting** (the Steam repo's
+5. **Document the shrink.** The .sql file keeps a running SHRINK LEDGER near
+   the top (in the FILTERING THE NOISE box): one line per filter with the
+   surviving row count, updated as each step is confirmed. Every threshold is
+   measured before it is chosen, and every filter's cost is counted before any
+   titles are read.
+
+6. **Read the prior project's actual files before starting** (the Steam repo's
    `hidden_gems.sql` and `hidden_gems_joins.sql`) and gap-check against them.
    Don't work from memory of the format.
 
-6. **The walkthrough is the product.** Don't pre-build and push the finished
+7. **The walkthrough is the product.** Don't pre-build and push the finished
    analysis. New repos start PRIVATE and only go public when Mike says so.
 
 ## Companion docs
