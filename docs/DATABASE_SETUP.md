@@ -47,7 +47,9 @@ rebuild), so only 1,000-row samples in `data/sample/` are committed.
    dialog pops up, click **Cancel** (we are importing, not hand-building a
    table).
 3. **File → Import → Table from CSV file…**
-4. Pick the `.tsv` file. In the dialog set:
+4. In the file picker, change the file-type filter to **All files (*)**. The
+   picker defaults to `*.csv`, so the `.tsv` files are hidden until you do this.
+5. Pick the `.tsv` file. In the dialog set:
    - **Table name:** `title_ratings` (or `title_basics` for the big file)
    - **Column names in first line:** checked (the files have a header row)
    - **Field separator:** **Tab**

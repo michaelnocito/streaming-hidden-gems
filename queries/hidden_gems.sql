@@ -1,0 +1,223 @@
+-- ############################################################
+-- #  STREAMING HIDDEN GEMS -- SQL ANALYSIS (PART 1: IMDb)    #
+-- #  Find highly-rated movies that never went mainstream.    #
+-- #  Data: IMDb non-commercial datasets (datasets.imdbws.com)#
+-- #  Tools: SQLite + DB Browser for SQLite                   #
+-- ############################################################
+
+-- ============================================================
+-- ABOUT THIS FILE (read me first)
+-- This analysis is written to be followed by someone learning
+-- SQL and data analysis. Each query has:
+--   WHY  -- the reason the question is being asked
+--   a plain-English "read out loud" of what the SQL does
+-- The sections below document HOW the data was imported, HOW we
+-- filtered out noise, HOW we scoped the question, and HOW we
+-- validated the results -- the reasoning matters as much as the
+-- final query.
+-- ============================================================
+
+-- ============================================================
+-- HOW TO STUDY THIS FILE (most important step -- IF you're learning)
+-- These wall-to-wall comments are a LEARNING SCAFFOLD, not how you
+-- comment real work. Two modes:
+--   * LEARNING: keep the "read out loud" comments and rehearse them
+--     (method below).
+--   * PORTFOLIO / INDUSTRY: strip them to standard LIGHT comments --
+--     intent + anything non-obvious. A comment on every obvious line
+--     is a red flag in professional code.
+--
+-- LEARNING METHOD -- rehearse, don't just retype:
+--   1. Take one small section at a time.
+--   2. Type and quietly SAY the read-out-loud comment
+--      (--SELECT the movie's title, --WHERE at least 5,000 votes...).
+--   3. Repeat the section until you can say the narration out loud
+--      SMOOTHLY, no stumbling -- that fluency means it clicked;
+--      stumbling shows the exact gap to revisit.
+--   4. THEN read/run the SQL; it now reads as the answer to a
+--      sentence you can already say.
+--   5. LEVEL UP: hide the SQL and rebuild the query from the comment.
+-- WHY IT WORKS (real learning science):
+--   * Self-explanation -- narrating a step in your own words deepens
+--     understanding (smooth = you get it; halting = the gap).
+--   * Generation effect -- producing beats reading (Slamecka & Graf
+--     1978; ~d=0.40).
+--   * Retrieval practice -- recalling beats re-reading, 61% vs 40%
+--     at one week (Roediger & Karpicke 2006) -- why step 5 matters.
+--   Full write-up: "How to Actually Learn From This" in README.
+-- ============================================================
+
+-- ============================================================
+-- THE DATA-QUALITY STORY: nothing about these files is a CSV
+--
+-- SYMPTOM(S): Three separate traps hit before a single query ran.
+--   1. The .tsv files were INVISIBLE in the import file picker.
+--   2. A file imported fine but landed under the WRONG table name
+--      (the 1.1 GB basics file was sitting in a table called
+--      title_ratings).
+--   3. A re-extracted ratings file turned out to be 8 KB instead
+--      of 29 MB -- silently truncated.
+--
+-- DIAGNOSIS / ROOT CAUSES:
+--   1. DB Browser's import dialog filters to *.csv by default;
+--      IMDb ships TAB-separated .tsv files, so the picker hides
+--      them until you switch the filter to "All files (*)".
+--   2. The import dialog auto-fills Table name from the filename
+--      and it is easy to import file A while the name still says
+--      B. The table name is a LABEL -- it does not prove what data
+--      is inside. Only looking at the columns does.
+--   3. An earlier partial extraction left a stub file behind.
+--      File size is the fastest data-quality check that exists:
+--      29,578,256 bytes expected vs 8,192 on disk = broken, before
+--      you read a single row.
+--
+-- FIXES: switch the picker filter to All files; verify a table by
+--   its COLUMNS (not its name) and ALTER TABLE ... RENAME when the
+--   label lies; re-extract from the original .gz and confirm the
+--   byte size before importing.
+--
+-- TWO MORE QUIRKS you must know before trusting any query below:
+--   * IMDb writes a missing value as the literal two characters \N
+--     (backslash-N), NOT as an empty cell. SQLite stores that as
+--     the TEXT '\N', so later steps filter it out explicitly --
+--     it is a fake null, not a real NULL.
+--   * EVERYTHING imports as TEXT. SQLite does not know numVotes is
+--     a number, and as text '999' sorts AFTER '10000' (character by
+--     character). Every numeric comparison below CASTs first.
+--     Forgetting the CAST does not error -- it silently returns
+--     wrong answers, which is worse.
+--
+-- LESSON: A result that looks impossible is usually a DATA
+--   problem, not a query problem. Always ask "is my logic wrong,
+--   or is my data wrong?" -- and check file sizes, column names,
+--   and a trusted record before trusting anything downstream.
+-- ============================================================
+
+-- ============================================================
+-- FILTERING THE NOISE (the heart of this analysis)
+--
+-- Raw data is noisy. "Hidden gem movies" only become visible
+-- after peeling away several layers of noise, one filter at a time:
+--
+--   1. WRONG-KIND noise -- IMDb bundles TV episodes, shorts, video
+--      games and more into one file. Movies are a small slice.
+--      Filter: titleType = 'movie'.
+--
+--   2. NO-SIGNAL noise -- a movie nobody has rated cannot be
+--      judged at all. Joining basics to ratings keeps only movies
+--      that have votes.
+--
+--   3. SMALL-SAMPLE noise -- a 9.8 from 40 voters is not "better"
+--      than an 8.5 from 20,000. Fixed with a vote FLOOR (set from
+--      the data in a later step, not guessed).
+--
+--   4. MAINSTREAM noise -- a beloved blockbuster is not "hidden."
+--      Fixed with a vote CEILING (also set from the data).
+--
+--   5. MISSING-DATA noise -- runtimeMinutes of '\N' means "not
+--      recorded," not zero. Excluded explicitly, because missing
+--      data must not be treated as a real value.
+--
+--   6. CATEGORY noise -- adult titles and sub-60-minute entries
+--      mislabeled as movies would pollute a movie list. Excluded,
+--      and the exclusion is documented.
+--
+-- Each filter is a deliberate judgment, set by looking at counts
+-- and distributions in the data -- never a number guessed blind.
+-- (The exact thresholds and the count each filter costs are
+-- recorded step by step below as we confirm them.)
+-- ============================================================
+
+-- ============================================================
+-- SCOPE & LIMITATIONS (decided up front, honestly)
+--
+-- MOVIES ONLY (intentionally):
+--   titleType = 'movie'. TV series spread their ratings across
+--   episodes and need a different gem definition -- they are a
+--   future Part, not a footnote here.
+--
+-- WHOSE RATINGS ARE THESE? IMDb voters skew English-speaking and
+--   film-enthusiast. A movie can be "hidden" to this audience yet
+--   be a household name in its home country. The list answers
+--   "hidden to the global IMDb audience" -- state the audience or
+--   the results get quietly misread.
+--
+-- SNAPSHOT IN TIME: ratings and vote counts are as of the download
+--   date (2026-07-12) and drift daily. Numbers in this file will
+--   not exactly match a re-download.
+--
+-- PRINCIPLE: every filter you leave OUT is also a decision. State
+-- the audience assumption so results are never quietly misread.
+-- ============================================================
+
+-- ============================================================
+-- VALIDATION STEPS (how we check the results are real)
+--
+--   A. ROW-COUNT CHECK -- each table's imported row count must
+--      match the source file (a truncated import poisons all
+--      downstream answers; we already caught one 8 KB stub).
+--
+--   B. KNOWN-RECORD CHECK -- verify one movie we can check by hand
+--      on imdb.com before trusting any ranked list.
+--
+--   C. MONOTONICITY CHECK -- every stricter filter must return
+--      FEWER rows. A stricter filter returning more rows is
+--      logically impossible and means a query was mis-run.
+--
+--   D. COUNT-BEFORE-TRUST -- check HOW MANY movies each filter
+--      returns before reading any titles, and record the shrink
+--      at every step.
+--
+--   E. REALITY CHECK on the final list -- confirm titles against
+--      real-world knowledge; investigate anything implausible
+--      rather than silently keeping or dropping it.
+--
+--   (Results of each check are recorded in the steps below as we
+--   run them.)
+-- ============================================================
+
+-- ============================================================
+-- BEST PRACTICES USED IN THIS PROJECT
+--   * Never edit raw data in place -- keep the original .gz, so
+--     everything is reproducible from source.
+--   * Keep queries in version control; large data stays out of
+--     git (.gitignore), with small samples committed instead.
+--   * Set thresholds from evidence (counts/distributions), not guesses.
+--   * Comment the WHY, not just the WHAT.
+--   * State scope and audience assumptions explicitly.
+--   * Validate against a known record AND against reality.
+--   * Document data defects and limitations openly.
+-- ============================================================
+
+-- ============================================================
+-- SQL FUNCTIONS & KEYWORDS USED (quick reference)
+--   SELECT ...          choose which columns to display
+--   FROM <table>        which table to pull from
+--   WHERE ...           keep only rows meeting a condition
+--   AND                 combine conditions (ALL must be true)
+--   ORDER BY ... DESC   sort results (DESC = highest first)
+--   LIMIT n             return only the first n rows
+--   AS <name>           give a column a custom name (an "alias")
+--   COUNT(*)            count rows; * means "every row"
+--   GROUP BY ...        collapse rows sharing a value into one summary row
+--   JOIN ... ON         match rows across two tables by a shared key
+--   CAST(x AS INTEGER)  treat x as a whole number (text '999' becomes 999)
+--   CAST(x AS REAL)     treat x as a decimal (9/10 = 0.9, not 0)
+--   ROUND(x, 1)         round x to 1 decimal place
+--   AVG(x)              average all values in a column
+--   BETWEEN a AND b     value is >= a and <= b (both ends included)
+--   <>                  "not equal to"
+-- ============================================================
+
+
+-- ============================================================
+-- STEP 1: Did both tables import at full size? (sanity check)
+-- WHY: Before trusting ANY analysis, confirm the imports are
+--      complete and not silently truncated -- we already caught
+--      one file that had quietly shrunk to 8 KB. A cut-off import
+--      poisons every later answer.
+--      Expected: title_ratings ~1,694,000 rows.
+-- ============================================================
+--SELECT (display) a COUNT of every row -- COUNT(*) counts every row
+--FROM (pull from) the title_ratings table
+SELECT COUNT(*) FROM title_ratings;
