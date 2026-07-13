@@ -14,17 +14,40 @@ gems: rated **8.0 or higher** (nearly two full points above the measured 6.13
 average movie) with **5,000 to 50,000 votes**, enough opinions to trust the
 score, too few to be mainstream.
 
-Highlights from the top 25:
+The top 25:
 
-| Movie | Year | Rating | Votes |
-|---|---|---|---|
-| The Chaos Class | 1975 | 9.1 | 46,425 |
-| Ramayana: The Legend of Prince Rama | 1993 | 9.1 | 17,832 |
-| Mayabazar | 1957 | 9.0 | 6,984 |
-| David Attenborough: A Life on Our Planet | 2020 | 8.9 | 36,252 |
-| O.J.: Made in America | 2016 | 8.9 | 23,996 |
-| The Marathon Family | 1982 | 8.8 | 18,218 |
-| The Human Condition III: A Soldier's Prayer | 1961 | 8.8 | 8,915 |
+| # | Movie | Year | Genres | Runtime | Rating | Votes |
+|---|---|---|---|---|---|---|
+| 1 | Mission C1000 | 2026 | Action | 128 | 9.3 | 5,787 |
+| 2 | The Chaos Class | 1975 | Comedy | 85 | 9.1 | 46,425 |
+| 3 | Ramayana: The Legend of Prince Rama | 1993 | Action, Adventure, Animation | 135 | 9.1 | 17,832 |
+| 4 | Unpaarvayil | 2025 | Thriller | 117 | 9.1 | 5,890 |
+| 5 | Attack on Titan: The Last Attack | 2024 | Action, Adventure, Animation | 145 | 9.0 | 32,154 |
+| 6 | Mayabazar | 1957 | Comedy, Drama | 192 | 9.0 | 6,984 |
+| 7 | Sandesham | 1991 | Comedy, Drama | 138 | 9.0 | 6,476 |
+| 8 | David Attenborough: A Life on Our Planet | 2020 | Biography, Documentary | 83 | 8.9 | 36,252 |
+| 9 | Tosun Pasha | 1976 | Comedy, History | 90 | 8.9 | 26,506 |
+| 10 | O.J.: Made in America | 2016 | Biography, Crime, Documentary | 467 | 8.9 | 23,996 |
+| 11 | The Message | 1976 | Biography, Drama, History | 207 | 8.9 | 12,031 |
+| 12 | Kireedam | 1989 | Action, Drama | 124 | 8.9 | 9,835 |
+| 13 | The Unnamed | 2016 | Drama | 100 | 8.9 | 6,190 |
+| 14 | The Devil | 2025 | (not recorded) | 167 | 8.9 | 5,763 |
+| 15 | Dominion | 2018 | Documentary | 120 | 8.9 | 5,227 |
+| 16 | Mirror Game | 2016 | Crime, Mystery, Thriller | 147 | 8.8 | 31,075 |
+| 17 | The Foster Brothers | 1976 | Comedy, History | 80 | 8.8 | 22,633 |
+| 18 | The Marathon Family | 1982 | Comedy, Drama | 92 | 8.8 | 18,218 |
+| 19 | C/o Kancharapalem | 2018 | Drama | 152 | 8.8 | 10,940 |
+| 20 | The Phantom of the Opera at the Royal Albert Hall | 2011 | Drama, Musical, Romance | 137 | 8.8 | 10,881 |
+| 21 | Monpura | 2009 | Crime, Drama, Musical | 136 | 8.8 | 9,995 |
+| 22 | The Human Condition III: A Soldier's Prayer | 1961 | Drama, History, War | 190 | 8.8 | 8,915 |
+| 23 | Natsamrat | 2016 | Drama, Family | 166 | 8.8 | 8,143 |
+| 24 | Les Misérables in Concert: The 25th Anniversary | 2010 | Drama, Musical | 178 | 8.8 | 6,830 |
+| 25 | Nadodikkattu | 1987 | Comedy | 158 | 8.8 | 6,716 |
+
+Row 14's genres show "(not recorded)" because the source stores missing
+values as the literal text `\N`; the gap is shown honestly rather than
+guessed. Rows 1, 4, and 14 are very new releases sitting just above the vote
+floor; early ratings usually settle as votes accumulate (see limitations).
 
 The headline pattern: the list is dominated by non-US cinema. Turkish comedy
 classics, Indian cinema across several languages and decades, Yugoslav and
