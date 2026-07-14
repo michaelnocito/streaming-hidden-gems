@@ -244,6 +244,14 @@ Graf 1978, ~*d* = 0.40); and retrieval practice — recalling beats re-reading,
 61% vs 40% recall at one week (Roediger & Karpicke 2006), which is why step 4
 is the highest-value move. Smooth narration is your live comprehension test.
 
+## Then Make It Yours: Extend the Project
+
+The final step of learning from this repo is changing it. **[docs/EXTEND_THIS_PROJECT.md](docs/EXTEND_THIS_PROJECT.md)**
+lists nine ways to push the analysis further — gems by genre, by decade, by
+runtime, stricter thresholds, the famous-but-unloved inverse question — every
+one of them doable with only the SQL already taught here. Predict, run,
+compare. That's where it sticks.
+
 ## How to Build the Database (step by step)
 
 Zero prior setup assumed. The full click-by-click walkthrough — DB Browser
