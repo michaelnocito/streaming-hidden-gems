@@ -224,7 +224,7 @@ written as a **learning resource**, not just working code:
 
 ## 🧠 How to Actually Learn From This
 
-Reading teaches a little. The real method: **rehearse the plain-English
+Reading teaches a little. The real method: **rehearse the
 "read out loud" comments until you can say them smoothly out loud.**
 
 **Learning vs. portfolio, first:** this file is commented wall-to-wall on

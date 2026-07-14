@@ -8,7 +8,7 @@ only.
 
 1. **Concepts first.** At the very start of the walkthrough, before Step 1,
    post in chat: the complete "SQL FUNCTIONS & KEYWORDS USED (quick
-   reference)" glossary (every keyword the project will use, one plain-English
+   reference)" glossary (every keyword the project will use, one everyday-words
    line each) plus the big-idea mental-model boxes (e.g. "HOW A JOIN THINKS",
    "TWO TABLES, ONE QUESTION", "EVERYTHING IMPORTS AS TEXT").
 
