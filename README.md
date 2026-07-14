@@ -182,6 +182,11 @@ Every filter left *out* is also a decision:
 
 ## Validation
 
+Checks like these are the working end of exploratory data analysis — the
+discipline of looking before trusting. For the why behind the habit (and the
+classic research that proves summary statistics can lie), see
+[Why Exploratory Data Analysis Matters](https://michaelnocito.github.io/analyst-prep-kit/guides/exploratory-data-analysis/).
+
 Results were checked five ways before being trusted:
 
 1. **Row-count check** — each table verified against the source file's line
