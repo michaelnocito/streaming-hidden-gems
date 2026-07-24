@@ -331,5 +331,10 @@ set of analyst learning tools and portfolio work:
   Excel, SQL, Python, Power BI, and Tableau practice kits.
 - 🌐 **[michaelnocito.github.io](https://michaelnocito.github.io)** — portfolio & more projects.
 
+**Like the way the SQL here reads?** The teaching-comment format used throughout
+this repo is available as a prompt pack that gets any AI assistant to write in
+the same format, so the queries you work through explain themselves:
+[The SQL Teaching-Comment Prompt Pack](https://michaelnocito.gumroad.com/l/sql-prompt-pack) ($7).
+
 *Know a hidden gem movie that belongs on this list — or spot one that
 shouldn't? Open an issue. Feedback welcome.*
