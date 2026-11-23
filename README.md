@@ -322,7 +322,7 @@ Each version links back here for the "how it was built" story.
 
 ## About
 
-Built by **Michael Nocito**, data analyst. This project is part of a broader
+Built by **Michael Nocito**, implementation analyst. This project is part of a broader
 set of analyst learning tools and portfolio work:
 
 - 🎮 **[Steam Hidden Gems](https://github.com/michaelnocito/steam-hidden-gems)** —
