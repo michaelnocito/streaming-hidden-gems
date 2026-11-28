@@ -337,7 +337,7 @@ set of analyst learning tools and portfolio work:
 It is also available as an agent that gets any AI assistant to write in
 the same format, plus a scoring rubric and handoff-mode examples, so the queries
 you work through explain themselves:
-[The SQL Comment System](https://michaelnocito.gumroad.com/l/sql-comment-system) ($29).
+[The SQL Comment System](https://michaelnocito.gumroad.com/l/sql-comment-system) (free).
 
 *Know a hidden gem movie that belongs on this list — or spot one that
 shouldn't? Open an issue. Feedback welcome.*

@@ -147,4 +147,4 @@ it rests on, and a cheat sheet, is written up here:
 If you would rather not hand-write the blocks, the agent that enforces this
 format on demand — plus a 12-point scoring rubric and handoff-mode examples —
 is packaged here:
-[The SQL Comment System](https://michaelnocito.gumroad.com/l/sql-comment-system) ($29).
+[The SQL Comment System](https://michaelnocito.gumroad.com/l/sql-comment-system) (free).
